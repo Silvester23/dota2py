@@ -107,6 +107,8 @@ def get_match_details(match_id, **kwargs):
 
 def get_player_details(steam_ids_64bit, fetcher = get_page, key = API_KEY, **kwargs):
     """
-    Detailed information about a player
+    Detailed information about a player.
+    
+    @param steam_ids_64bit: A string of comma-separated 64-bit steam ids. Can be integer if only one id is provided.
     """
     return make_request("GetPlayerSummaries", base=PLAYER_BASE_URL, version="v0002", params = {"steamids": steam_ids_64bit}, **kwargs)
