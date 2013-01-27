@@ -7,6 +7,8 @@ import urllib
 
 API_KEY = None
 BASE_URL = "https://api.steampowered.com/IDOTA2Match_570/"
+PLAYER_BASE_URL = "http://api.steampowered.com/ISteamUser/"
+
 
 
 def set_api_key(key):
@@ -58,7 +60,7 @@ def get_page(url):
 
 
 def make_request(name, params=None, version="V001", key=None,
-                 fetcher=get_page):
+                 fetcher=get_page, base=BASE_URL):
     """
     Make an API request
     """
@@ -69,7 +71,7 @@ def make_request(name, params=None, version="V001", key=None,
     if not params["key"]:
         raise ValueError("API key not set")
 
-    url = url_map("%s%s/%s/" % (BASE_URL, name, version), params)
+    url = url_map("%s%s/%s/" % (base, name, version), params)
     return fetcher(url)
 
 
@@ -102,3 +104,9 @@ def get_match_details(match_id, **kwargs):
     """
 
     return make_request("GetMatchDetails", {"match_id": match_id}, **kwargs)
+
+def get_player_details(steam_ids_64bit, fetcher = get_page, key = API_KEY, **kwargs):
+    """
+    Detailed information about a player
+    """
+    return make_request("GetPlayerSummaries", base=PLAYER_BASE_URL, version="v0002", params = {"steamids": steam_ids_64bit}, **kwargs)
